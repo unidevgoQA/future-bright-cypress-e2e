@@ -109,21 +109,21 @@ class SignUpPage {
         return this;
     }
 
-    static peerSurvey = () => {
-
-        cy.xpath(this.signUpBtn).click();
-        cy.xpath(this.yesPleaseBtn).click();
-        cy.xpath(this.peerOption).click();
-        //
-        // cy.iframe('iframe').then((iframe) => {
-        //
-        // });
-        cy.get('iframe').its('body').then((body) => {
-            cy.wrap(body).get('[id^=email-]').type("sompod");
-        }
-
-        );
-    }
+    // static peerSurvey = () => {
+    //
+    //     cy.xpath(this.signUpBtn).click();
+    //     cy.xpath(this.yesPleaseBtn).click();
+    //     cy.xpath(this.peerOption).click();
+    //     //
+    //     // cy.iframe('iframe').then((iframe) => {
+    //     //
+    //     // });
+    //     cy.get('iframe[id^="Form"]').its('body').then((body) => {
+    //         cy.wrap(body).get('[id^=email-]').type("sompod");
+    //     }
+    //
+    //     );
+    // }
 }
 
 
