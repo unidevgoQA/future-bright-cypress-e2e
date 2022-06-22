@@ -1,13 +1,26 @@
 import "cypress-iframe";
-import "cypress-xpath";
 import "cypress-localstorage-commands";
-import {TestData} from "../fixtures/testData";
-import * as Process from "process";
+import "cypress-xpath";
+import { TestData } from "../fixtures/testData";
 
 class SignUpPage {
 
+
+    static signUpBtn = "//a[normalize-space()='Sign up']";
+    static yesPleaseBtn = "//a[normalize-space()='Yes, please!']";
+    static noThanksBtn = "//a[normalize-space()='No, thanks']";
+    static peerOption = "(//h3[.='Select your role']/ancestor::div/child::div/div/div)[1]/label/div";
+    static visionaryOption = "(//h3[.='Select your role']/ancestor::div/child::div/div/div)[2]/label/div";
+
+
+
     static getHomePage = () => {
-        cy.visit("https://qa.futurebrightenergy.com/");
+        cy.visit(Cypress.env('base_url'));
+        cy.window().then((win) => {
+            win.sessionStorage.clear()
+            win.localStorage.clear()
+        });
+        cy.reload();
         return this;
     }
 
@@ -96,7 +109,23 @@ class SignUpPage {
         return this;
     }
 
+    static peerSurvey = () => {
 
+        cy.xpath(this.signUpBtn).click();
+        cy.xpath(this.yesPleaseBtn).click();
+        cy.xpath(this.peerOption).click();
+        //
+        // cy.iframe('iframe').then((iframe) => {
+        //
+        // });
+        cy.get('iframe').its('body').then((body) => {
+            cy.wrap(body).get('[id^=email-]').type("sompod");
+        }
+
+        );
+    }
 }
+
+
 
 export default SignUpPage;
