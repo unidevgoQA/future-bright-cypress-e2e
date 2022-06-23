@@ -1,7 +1,7 @@
 import "cypress-iframe";
 import "cypress-localstorage-commands";
 import "cypress-xpath";
-import { TestData } from "../fixtures/testData";
+import {TestData} from "../fixtures/testData";
 
 class SignUpPage {
 
@@ -11,7 +11,6 @@ class SignUpPage {
     static noThanksBtn = "//a[normalize-space()='No, thanks']";
     static peerOption = "(//h3[.='Select your role']/ancestor::div/child::div/div/div)[1]/label/div";
     static visionaryOption = "(//h3[.='Select your role']/ancestor::div/child::div/div/div)[2]/label/div";
-
 
 
     static getHomePage = () => {
@@ -109,21 +108,96 @@ class SignUpPage {
         return this;
     }
 
-    // static peerSurvey = () => {
-    //
-    //     cy.xpath(this.signUpBtn).click();
-    //     cy.xpath(this.yesPleaseBtn).click();
-    //     cy.xpath(this.peerOption).click();
-    //     //
-    //     // cy.iframe('iframe').then((iframe) => {
-    //     //
-    //     // });
-    //     cy.get('iframe[id^="Form"]').its('body').then((body) => {
-    //         cy.wrap(body).get('[id^=email-]').type("sompod");
-    //     }
-    //
-    //     );
-    // }
+    static peerSurvey = () => {
+
+        cy.xpath(this.signUpBtn).click();
+        cy.xpath(this.yesPleaseBtn).click();
+        cy.xpath(this.peerOption).click();
+
+        cy.get('#hs-form-iframe-0')
+            .wait(500)
+            .within($iframe => {
+                const $body = $iframe.contents().find('body')
+                cy.readFile(Cypress.env('login_data_path')).then(data => {
+                    TestData.writeCounterFile();
+                    let email = TestData.generateEmailAlias(data.emailPrefix, data.counter, data.emailSuffix);
+                    cy.wrap($body)
+                        .find('[type="email"]')
+                        .type(email, {force: true})
+                });
+
+                cy.wrap($body).
+                    find('input[id^="firstname"]').type(TestData.getFullName(), {force: true})
+
+
+                cy.wrap($body).
+                    find('input[value="Environmentalist"]').click({force: true})
+
+                cy.wrap($body).
+                    find('input[value="Less than 1 year"]').click({force: true})
+
+                cy.wrap($body).
+                    find('input[value="I am investing for fun – I don’t have a goal"]').click({force: true})
+
+                cy.wrap($body).
+                    find('input[value="Low Risk"]').click({force: true})
+
+                cy.wrap($body).
+                    find('input[value="Submit"]').click({force: true})
+
+            });
+        cy.contains("Sign up");
+        return this;
+
+    }
+
+    static visionarySurvey = () => {
+
+        cy.xpath(this.signUpBtn).click();
+        cy.xpath(this.yesPleaseBtn).click();
+        cy.xpath(this.visionaryOption).click();
+
+        cy.get('#hs-form-iframe-0')
+            .wait(500)
+            .within($iframe => {
+                const $body = $iframe.contents().find('body')
+                cy.readFile(Cypress.env('login_data_path')).then(data => {
+                    TestData.writeCounterFile();
+                    let email = TestData.generateEmailAlias(data.emailPrefix, data.counter, data.emailSuffix);
+                    cy.wrap($body)
+                        .find('[type="email"]').eq(1)
+                        .type(email, {force: true})
+                });
+
+                // cy.wrap($body).
+                // find('input[id^="firstname"]').type(TestData.getFullName(), {force: true})
+
+
+                // cy.wrap($body).
+                // xpath("//input[starts-with(@id,'company-')]").type(TestData.getFullName() + " Organization LLC", {force: true})
+
+                // cy.wrap($body).
+                // find('input[id^="address"]').type("st 09, Dhaka", {force: true})
+                //
+                // cy.wrap($body).
+                //     find('select[id*="industry"]').select('Accounting', {force: true})
+                //
+                //
+                // cy.wrap($body).
+                //     find('input[id*="website"]').select('google.com', {force: true})
+                //
+                // cy.wrap($body).
+                //     find('input[id^="current_monthly_energy_bill"]').type("2500")
+                //
+                //
+                // cy.wrap($body).
+                // find('input[value="Submit"]').click({force: true})
+
+            });
+        // cy.contains("Sign Up");
+        // return this;
+
+    }
 }
 
 

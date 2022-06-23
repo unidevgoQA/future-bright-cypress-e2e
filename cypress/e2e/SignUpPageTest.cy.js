@@ -48,12 +48,13 @@ describe('Sign Up Page Test', () => {
         cy.contains("A code was sent to")
     })
 
-    // it('UI Test 1.3 - Peer Survey', () => {
+    it('UI Test 1.3 - Peer Survey', () => {
+        HomePage.getHomePage();
+        SignUpPage.peerSurvey();
+    });
+
+    // it('UI Test 1.3 - Visionary Survey', () => {
     //     HomePage.getHomePage();
-    //     SignUpPage.peerSurvey();
-    //
-    //
+    //     SignUpPage.visionarySurvey();
     // });
-
-
 })
