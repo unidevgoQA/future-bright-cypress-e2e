@@ -8,6 +8,9 @@ class DashboardPage {
     static passwordField = '#password';
     static loginBtn = '.css-prfyaa';
 
+    static connectWalletBtn = "//button[normalize-space()='Connect Wallet']";
+
+
     static getHomePage = () => {
         cy.visit("https://qa.futurebrightenergy.com/");
         return this;
@@ -107,6 +110,49 @@ class DashboardPage {
         cy.get(this.loginBtn).click();
         return this;
     }
+
+    static checkConnectWalletButton = () => {
+        cy.xpath(this.connectWalletBtn).should('be.visible');
+        cy.xpath(this.connectWalletBtn).click();
+        return this;
+    }
+
+    static checkConnectWalletFunctionality = () => {
+        cy.get('iframe[src^="https://knightsbridge-demo.vercel.app/auth"]')
+            .wait(500)
+            .within($iframe => {
+                const $body = $iframe.contents().find('body')
+
+                cy.wrap($body).find('[class^="card__Card"]').click();
+
+                // cy.readFile(Cypress.env('login_data_path')).then(data => {
+                //     TestData.writeCounterFile();
+                //     let email = TestData.generateEmailAlias(data.emailPrefix, data.counter, data.emailSuffix);
+                //     cy.wrap($body)
+                //         .find('[type="email"]')
+                //         .type(email, {force: true})
+                // });
+
+                cy.wrap($body)
+                    .find('[type="email"]')
+                    .type('ss.unidev+1@gmail.com', {force: true})
+
+                cy.wrap($body)
+                    .find('[type="password"]')
+                    .type('5946644Ss@', {force: true})
+
+                cy.wrap($body)
+                    .find('[type="submit"]')
+                    .click();
+
+                cy.wrap($body)
+                    .contains("Wallet Connected");
+
+            });
+        return this;
+
+    }
+
 
 
 }

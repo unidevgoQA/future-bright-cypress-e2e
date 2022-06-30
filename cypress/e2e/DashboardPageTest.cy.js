@@ -1,6 +1,7 @@
 
 import {TestData} from "../fixtures/testData";
 import LoginPage from "../pageObjects/Login.page";
+import DashboardPage from "../pageObjects/Dashboard.page";
 
 describe('Dashboard page test',() => {
 
@@ -23,7 +24,7 @@ describe('Dashboard page test',() => {
 
 
 
-});
+
     it('UI Test 1.2 - Check Dashboard link is visible', () => {
         cy.get('.css-ra5upo > .chakra-text').should('be.visible');
     });
@@ -39,3 +40,13 @@ describe('Dashboard page test',() => {
     it('UI Test 1.5 - Check the Account link is visible', () => {
         cy.get('[href="/dashboard/portfolio"] > .chakra-text').should('be.visible');
     });
+
+    it('UI Test 1.6 - connect wallet button functionality validation', () => {
+        DashboardPage.checkConnectWalletButton();
+    });
+
+    it('UI Test 1.7 - Check the connect wallet functionality', () => {
+        DashboardPage.checkConnectWalletFunctionality();
+    });
+
+});
